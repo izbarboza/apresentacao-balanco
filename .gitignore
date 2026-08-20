@@ -1,0 +1,14 @@
+# Material de referência/pesquisa — não faz parte do site publicado
+ecossistema.png
+ecossistema_balanco.pdf
+ecossistema_balanco_e_formacao_de_ritmistas_no_rio.pdf
+*.docx
+apresentacao*.zip
+
+# Versões antigas de fotos, substituídas
+fotos/proftimbal_old.jpeg
+fotos/profxequere_.jpeg
+fotos/balanco.png
+
+# Config local do Claude Code — não faz parte do site
+.claude/

@@ -1,0 +1,923 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ecossistema Balanço — Apresentação</title>
+
+<!--
+  ============================================================================
+  COMO EDITAR ESTA APRESENTAÇÃO
+  ============================================================================
+  Este arquivo é 100% autocontido (HTML + CSS + JS num só lugar). Para editar:
+
+  1) TEXTOS: procure o slide que quer mudar — cada um é um bloco
+     <section class="slide"> ... </section> lá embaixo, na área "SLIDES".
+     Cada slide tem uma marcação de identificação (algo como "SLIDE 3: ...") logo acima dele.
+     Basta trocar o texto entre as tags (títulos ficam em <h2>/<h1>,
+     parágrafos em <p>, listas em <li>).
+
+  2) CORES: todas as cores estão centralizadas no bloco ":root" logo no
+     início do <style> abaixo. Mude os valores hexadecimais lá e o efeito
+     se propaga pra apresentação inteira. Fundo claro (--bg/--panel),
+     texto escuro (--text) e o verde de marca (--accent, #056735) como
+     destaque principal. Há também quatro cores de apoio (--red, --blue,
+     --yellow, --purple) usadas como detalhe em faixas de card, unidades
+     e pills pela apresentação — preto, branco e verde seguem
+     predominando no todo.
+
+  3) ADICIONAR UM SLIDE NOVO: copie um bloco <section class="slide">...
+     </section> inteiro, cole onde quiser (respeitando a ordem), mude o
+     conteúdo e pronto — a navegação e os pontinhos de progresso se
+     atualizam sozinhos (são gerados por JS, não precisa mexer em nada
+     no <script>).
+
+  4) REMOVER UM SLIDE: apague o bloco <section class="slide">...</section>
+     correspondente.
+
+  5) Para apresentar: abra este arquivo com duplo clique no navegador,
+     ou clique com botão direito > Abrir com > Chrome/Edge.
+     Navegue com as setas do teclado, espaço, ou clicando nas setas
+     laterais. Tecla "F" entra em tela cheia.
+  ============================================================================
+-->
+
+<style>
+  :root{
+    /* ---------- PALETA DE CORES (edite aqui) ---------- */
+    --bg:        #faf9f5;   /* fundo — branco levemente quente, não cansa a vista */
+    --panel:     #ffffff;   /* cards e superfícies */
+    --panel-2:   #f1efe7;   /* superfície secundária (pills, thumbs) */
+    --border:    #e4e0d5;   /* linhas e bordas discretas */
+    --text:      #16201a;   /* texto principal — quase preto */
+    --text-dim:  #5c675e;   /* texto secundário */
+    --accent:      #056735; /* verde de marca — funciona direto como texto e preenchimento */
+    --accent-soft: #e5f2ea; /* verde bem clarinho — fundo de badges e cards em destaque */
+    --accent-line: #bcdfc9; /* verde clarinho — bordas de destaque */
+    --red:    #eb514f;
+    --blue:   #65a0cf;
+    --yellow: #e4cf57;
+    --purple: #383358;
+    --danger: #eb514f;
+
+    --font-head: 'Segoe UI', 'Arial', sans-serif;
+    --font-body: 'Segoe UI', 'Arial', sans-serif;
+  }
+
+  *{ box-sizing: border-box; }
+  html,body{
+    margin:0; padding:0; height:100%;
+    background:var(--bg); color:var(--text);
+    font-family:var(--font-body);
+    overflow:hidden;
+  }
+
+  /* ---------- textura de fundo sutil ---------- */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    background-image:
+      linear-gradient(rgba(20,30,24,.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(20,30,24,.05) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events:none;
+    z-index:0;
+  }
+
+  /* ============================ CHROME / UI ============================ */
+  header.topbar{
+    position:fixed; top:0; left:0; right:0;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:18px 32px;
+    z-index:50;
+    pointer-events:none;
+  }
+  .logo{
+    display:flex; align-items:center; gap:10px;
+    font-family:var(--font-head);
+    font-weight:800; letter-spacing:.08em;
+    font-size:14px; color:var(--text-dim);
+    text-transform:uppercase;
+  }
+  .logo .dot{ width:8px; height:8px; border-radius:50%; background:var(--accent); }
+  .counter{
+    font-family:var(--font-head);
+    font-size:13px; color:var(--text-dim);
+    letter-spacing:.05em;
+  }
+  .counter b{ color:var(--accent); font-weight:700; }
+
+  .progress-track{
+    position:fixed; top:0; left:0; right:0; height:3px;
+    background:var(--border); z-index:60;
+  }
+  .progress-fill{
+    height:100%; background:var(--accent);
+    transition:width .4s ease;
+  }
+
+  nav.dots{
+    position:fixed; bottom:22px; left:50%; transform:translateX(-50%);
+    display:flex; gap:8px; z-index:50;
+  }
+  nav.dots button{
+    width:8px; height:8px; border-radius:50%;
+    border:1px solid var(--border);
+    background:transparent; cursor:pointer; padding:0;
+    transition:all .25s ease;
+  }
+  nav.dots button.active{ background:var(--accent); border-color:var(--accent); width:22px; border-radius:5px; }
+
+  .arrow-btn{
+    position:fixed; top:50%; transform:translateY(-50%);
+    width:44px; height:44px; border-radius:50%;
+    background:var(--panel); border:1px solid var(--border);
+    color:var(--text); font-size:18px;
+    display:flex; align-items:center; justify-content:center;
+    cursor:pointer; z-index:50; opacity:.7;
+    box-shadow:0 2px 8px rgba(20,30,24,.06);
+    transition:opacity .2s, border-color .2s;
+  }
+  .arrow-btn:hover{ opacity:1; border-color:var(--accent); color:var(--accent); }
+  .arrow-btn.prev{ left:22px; }
+  .arrow-btn.next{ right:22px; }
+  .arrow-btn:disabled{ opacity:.15; cursor:default; }
+
+  .fs-btn{
+    position:fixed; bottom:22px; right:28px; z-index:50;
+    font-family:var(--font-head); font-size:11px; letter-spacing:.06em;
+    color:var(--text-dim); background:var(--panel); border:1px solid var(--border);
+    padding:7px 12px; border-radius:20px; cursor:pointer;
+    text-transform:uppercase;
+  }
+  .fs-btn:hover{ color:var(--accent); border-color:var(--accent); }
+
+  /* ============================ SLIDES ============================ */
+  .deck{
+    position:relative; z-index:1;
+    height:100vh; width:100vw;
+  }
+  .slide{
+    position:absolute; inset:0;
+    display:flex; flex-direction:column; justify-content:center;
+    padding:110px 100px 90px;
+    opacity:0; visibility:hidden;
+    transform:translateY(24px);
+    transition:opacity .5s ease, transform .5s ease, visibility .5s;
+  }
+  .slide.active{
+    opacity:1; visibility:visible; transform:translateY(0);
+  }
+
+  .eyebrow{
+    font-family:var(--font-head); text-transform:uppercase;
+    letter-spacing:.16em; font-size:12.5px; font-weight:700;
+    color:var(--accent); margin:0 0 18px;
+  }
+  h1{
+    font-family:var(--font-head); font-size:56px; font-weight:800;
+    line-height:1.08; margin:0 0 20px; letter-spacing:-.01em;
+  }
+  h2{
+    font-family:var(--font-head); font-size:38px; font-weight:800;
+    line-height:1.15; margin:0 0 28px; letter-spacing:-.01em;
+  }
+  h1 .accent, h2 .accent{ color:var(--accent); }
+  .lede{
+    font-size:19px; color:var(--text-dim); max-width:680px;
+    line-height:1.6; margin:0;
+  }
+
+  .grid{ display:grid; gap:22px; }
+  .grid-3{ grid-template-columns:repeat(3,1fr); }
+  .grid-2{ grid-template-columns:repeat(2,1fr); }
+  .grid-4{ grid-template-columns:repeat(4,1fr); }
+
+  .card{
+    background:var(--panel); border:1px solid var(--border);
+    box-shadow:0 1px 2px rgba(20,30,24,.03), 0 8px 20px rgba(20,30,24,.04);
+    border-radius:14px; padding:26px 24px;
+  }
+  .card h3{
+    font-family:var(--font-head); font-size:18px; font-weight:700;
+    margin:0 0 10px; color:var(--text);
+    display:flex; align-items:center; gap:10px;
+  }
+  .card p{ font-size:14.5px; color:var(--text-dim); line-height:1.55; margin:0; }
+  .card .tag{
+    display:inline-block; font-size:10.5px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.08em;
+    color:var(--accent); background:var(--accent-soft);
+    border:1px solid var(--accent-line); border-radius:20px;
+    padding:3px 10px; margin-bottom:12px;
+  }
+
+  ul.plain{ list-style:none; margin:0; padding:0; }
+  ul.plain li{
+    font-size:15px; color:var(--text-dim); padding:8px 0 8px 26px;
+    position:relative; border-bottom:1px solid var(--border);
+    line-height:1.5;
+  }
+  ul.plain li:last-child{ border-bottom:none; }
+  ul.plain li::before{
+    content:"→"; position:absolute; left:0; color:var(--accent); font-weight:700;
+  }
+
+  .pill-row{ display:flex; flex-wrap:wrap; gap:10px; }
+  .pill{
+    background:var(--panel-2); border:1px solid var(--border);
+    border-left:3px solid var(--border);
+    border-radius:20px; padding:8px 16px; font-size:13.5px; color:var(--text);
+  }
+
+  /* rótulo curto para separar sub-temas dentro de uma coluna de texto (ex.: slide 9) */
+  .mini-label{
+    font-family:var(--font-head); text-transform:uppercase;
+    letter-spacing:.08em; font-size:11px; font-weight:700;
+    color:var(--accent); margin:22px 0 8px;
+  }
+  .mini-label:first-child{ margin-top:0; }
+
+  /* ---- triângulo do ecossistema (slide 4) — três frentes conversando em ciclo ---- */
+  .eco-triangle{ position:relative; width:740px; max-width:100%; height:350px; margin:8px auto 0; }
+  .eco-triangle svg{ position:absolute; inset:0; width:100%; height:100%; overflow:visible; }
+  .eco-triangle .flow{ fill:none; stroke-width:3; stroke-linecap:round; }
+  .eco-triangle .flow.a{ stroke:var(--blue); }
+  .eco-triangle .flow.b{ stroke:var(--yellow); }
+  .eco-triangle .flow.c{ stroke:var(--red); }
+  .eco-triangle .arrowhead.a{ fill:var(--blue); }
+  .eco-triangle .arrowhead.b{ fill:var(--yellow); }
+  .eco-triangle .arrowhead.c{ fill:var(--red); }
+  .eco-triangle .flow-label{
+    font-family:var(--font-head); font-size:12px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.04em;
+  }
+  .eco-triangle .flow-label.a{ fill:var(--blue); }
+  .eco-triangle .flow-label.b{ fill:var(--yellow); }
+  .eco-triangle .flow-label.c{ fill:var(--red); }
+
+  .tri-node{
+    position:absolute; width:220px;
+    transform:translate(-50%,-50%);
+    background:var(--panel); border:1px solid var(--border);
+    box-shadow:0 1px 2px rgba(20,30,24,.03), 0 8px 20px rgba(20,30,24,.05);
+    border-radius:14px; padding:18px 20px; text-align:left;
+    border-top:4px solid var(--border);
+  }
+  .tri-node h3{ font-family:var(--font-head); font-size:16px; font-weight:700; margin:0 0 8px; display:flex; align-items:center; gap:8px; }
+  .tri-node p{ font-size:13px; color:var(--text-dim); line-height:1.5; margin:0; }
+  .tri-node.escola{ left:370px; top:50px; border-top-color:var(--blue); }
+  .tri-node.bloco{ left:630px; top:290px; border-top-color:var(--yellow); }
+  .tri-node.banda{ left:110px; top:290px; border-top-color:var(--red); }
+
+  /* ---- tabela de corpo docente (slide 8) ---- */
+  .directors-photo{
+    border-radius:14px; overflow:hidden; border:1px solid var(--border);
+    box-shadow:0 1px 2px rgba(20,30,24,.03), 0 8px 20px rgba(20,30,24,.04);
+    aspect-ratio: 547 / 437;
+  }
+  .directors-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* ---- fotos dos professores novos, orientações variadas (slide 8) ---- */
+  .teacher-photo{
+    border-radius:14px; overflow:hidden; border:1px solid var(--border);
+    box-shadow:0 1px 2px rgba(20,30,24,.03), 0 8px 20px rgba(20,30,24,.04);
+    aspect-ratio: 547 / 437; background:var(--panel-2);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .teacher-photo img{ max-width:100%; max-height:100%; object-fit:contain; display:block; }
+
+  /* ---- fotos do enredo 2027, formato widescreen (slides 12-13) ---- */
+  .theme-photo{
+    border-radius:14px; overflow:hidden; border:1px solid var(--border);
+    box-shadow:0 1px 2px rgba(20,30,24,.03), 0 8px 20px rgba(20,30,24,.05);
+    aspect-ratio: 16 / 9;
+  }
+  .theme-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .theme-photo.full{ width:100%; max-width:900px; margin:8px auto 0; }
+
+  .team-table{ width:100%; border-collapse:collapse; margin-top:10px; }
+  .team-table th{
+    text-align:left; font-family:var(--font-head); font-size:11px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.06em; color:var(--text-dim);
+    padding:0 16px 10px; border-bottom:2px solid var(--border);
+  }
+  .team-table td{
+    padding:11px 16px; font-size:14px; color:var(--text);
+    border-bottom:1px solid var(--border); line-height:1.4;
+  }
+  .team-table tr:last-child td{ border-bottom:none; }
+  .team-table td.naipe{ font-weight:700; color:var(--accent); white-space:nowrap; }
+  .team-table td.tbd{ color:var(--text-dim); font-style:italic; }
+  .mestre-tag{
+    display:inline-block; font-size:10.5px; font-weight:700;
+    text-transform:uppercase; letter-spacing:.06em;
+    color:var(--accent); background:var(--accent-soft);
+    border:1px solid var(--accent-line); border-radius:20px;
+    padding:3px 10px; vertical-align:middle;
+  }
+  .mestre-note{
+    font-size:14.5px; color:var(--text); line-height:1.6;
+    margin:0 0 18px; display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+
+  /* ---- instrumentos (slide 7) ---- */
+  .instruments-grid{ display:grid; grid-template-columns:repeat(4,1fr); gap:16px; justify-items:center; }
+  .instrument-card{ text-align:center; }
+  .instrument-card .thumb{
+    width:120px; height:120px; border-radius:12px; overflow:hidden;
+    background:var(--panel-2); border:1px solid var(--border);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .instrument-card .thumb img{ width:100%; height:100%; object-fit:contain; padding:8px; }
+  .instrument-card .label{
+    margin-top:8px; font-size:13px; color:var(--text); font-weight:600;
+  }
+  .instrument-card.is-new .thumb{ border-color:var(--yellow); box-shadow:0 0 0 2px var(--yellow); }
+  .instrument-card .badge-new{
+    display:inline-block; margin-top:4px; font-size:10px; font-weight:800;
+    letter-spacing:.02em; color:#3a2f00; background:var(--yellow);
+    padding:2px 8px; border-radius:999px;
+  }
+
+  /* ---- placeholders de texto/foto genéricos (slides de Canto, Timbal/Xequerê, Enredo 2027) ---- */
+  .placeholder-text{
+    border:1px dashed var(--accent-line); background:var(--accent-soft);
+    border-radius:12px; padding:18px 20px; color:var(--text-dim);
+    font-size:15px; font-style:italic; line-height:1.65;
+  }
+  .photo-stack{ display:flex; flex-direction:column; gap:20px; height:100%; }
+  .photo-placeholder{
+    flex:1; border-radius:14px; border:2px dashed var(--border);
+    background:var(--panel-2); color:var(--text-dim);
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; font-size:13.5px; font-weight:600; line-height:1.5;
+    padding:16px; gap:6px;
+  }
+  .photo-placeholder .ph-icon{ font-size:26px; }
+  .photo-placeholder.standalone{ flex:none; aspect-ratio:4/3; height:auto; }
+
+  .card .badge-new{
+    display:inline-block; margin-top:4px; font-size:10px; font-weight:800;
+    letter-spacing:.02em; color:#3a2f00; background:var(--yellow);
+    padding:2px 8px; border-radius:999px;
+  }
+
+  /* ---- timeline / trajetória (slide 2) ---- */
+  .timeline{ display:flex; align-items:stretch; gap:0; margin-top:16px; }
+  .timeline .step{
+    flex:1; background:var(--panel); border:1px solid var(--border);
+    border-top:4px solid var(--border);
+    border-radius:12px; padding:18px 16px; position:relative;
+  }
+  .timeline .step:nth-child(1){ border-top-color:var(--yellow); }
+  .timeline .step:nth-child(2){ border-top-color:var(--blue); }
+  .timeline .step:nth-child(4){ border-top-color:var(--purple); }
+  .timeline .step.mid{ background:linear-gradient(160deg, var(--accent-soft), var(--panel)); border-color:var(--accent-line); border-top-color:var(--accent); }
+  .timeline .step + .step{ margin-left:16px; }
+  .timeline .step .n{ font-size:11px; color:var(--accent); font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+  .timeline .step h4{ font-size:15.5px; margin:8px 0 6px; }
+  .timeline .step p{ font-size:12.5px; color:var(--text-dim); margin:0; line-height:1.5; }
+
+  /* ---- passos em sequência com seta (slide 10) ---- */
+  .steps3{ display:flex; align-items:center; gap:0; margin-top:14px; }
+  .steps3 .card{ flex:1; }
+  .steps3 .arrow{ color:var(--accent); font-size:22px; padding:0 10px; }
+
+  .closing{ text-align:center; align-items:center; }
+  .closing h1{ font-size:48px; }
+
+  footer.credit{
+    position:fixed; bottom:26px; left:32px; z-index:50;
+    font-size:11px; color:var(--text-dim); opacity:.55; letter-spacing:.05em;
+  }
+
+  /* ---------- impressão: gera uma página por slide ---------- */
+  @media print{
+    body{ overflow:visible; }
+    header.topbar, nav.dots, .arrow-btn, .fs-btn, .progress-track, footer.credit{ display:none; }
+    .slide{
+      position:relative; opacity:1 !important; visibility:visible !important;
+      transform:none !important; page-break-after:always;
+      height:100vh;
+    }
+  }
+</style>
+</head>
+<body>
+
+  <div class="progress-track"><div class="progress-fill" id="progressFill"></div></div>
+
+  <header class="topbar">
+    <div class="logo"><span class="dot"></span> Ecossistema Balanço</div>
+    <div class="counter"><b id="curNum">01</b> / <span id="totalNum">14</span></div>
+  </header>
+
+  <div class="deck" id="deck">
+
+    <!-- SLIDE 1: Capa -->
+    <section class="slide active">
+      <p class="eyebrow">Escola de Formação de Ritmistas · Bloco de Carnaval · Banda Show</p>
+      <h1>Escola <span class="accent">Balanço</span></h1>
+      <p class="lede">Formação de ritmistas para o Carnaval do Rio de Janeiro.</p>
+    </section>
+
+    <!-- SLIDE 2: De onde viemos — trajetória -->
+    <section class="slide">
+      <p class="eyebrow">De Onde Viemos</p>
+      <h2>Uma trajetória até a <span class="accent">Escola Balanço</span></h2>
+      <p class="lede" style="margin-bottom:10px;">O projeto foi mudando de forma ao longo dos anos, e cada fase deixou uma marca no que somos hoje.</p>
+      <div class="timeline">
+        <div class="step">
+          <div class="n">01</div>
+          <h4>Banda Show</h4>
+          <p>Fundada em 2018 pelo Mestre Yago, nasce querendo tocar o "lado B" do samba-enredo</p>
+        </div>
+        <div class="step">
+          <div class="n">02</div>
+          <h4>Oficina de Percussão + Bloco de Carnaval</h4>
+          <p>O projeto se abre para todos os ritmos e passa a desfilar no Carnaval</p>
+        </div>
+        <div class="step mid">
+          <div class="n">03 · Hoje</div>
+          <h4>Escola Balanço</h4>
+          <p>Toda a trajetória se consolida numa escola de formação de ritmistas para o Carnaval</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 3: Abertura — Apresentando a Escola Balanço -->
+    <section class="slide">
+      <p class="eyebrow">Abertura</p>
+      <h2>Apresentando a <span class="accent">Escola Balanço</span></h2>
+      <p class="lede" style="margin-bottom:36px;">
+        O projeto passa a se chamar oficialmente <b>Escola Balanço de Formação de Ritmistas
+        para o Carnaval</b>: uma estrutura mais ampla que reúne tudo o que já fazemos.
+        O Bloco Balanço continua existindo exatamente como sempre foi: agora ele é uma das frentes dentro dessa escola.
+      </p>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="tag">O que muda</div>
+          <h3>Uma escola, não só um bloco</h3>
+          <p>O Bloco Balanço segue igual — ensaios, desfile, repertório. Ele passa a ser uma das frentes de uma estrutura maior.</p>
+        </div>
+        <div class="card">
+          <div class="tag">Marca</div>
+          <h3>Escola Balanço de Formação de Ritmistas</h3>
+          <p>Novo nome oficial do projeto, que abriga todas as frentes de ensino e apresentação.</p>
+        </div>
+        <div class="card">
+          <div class="tag">Para você, aluno(a)</div>
+          <h3>Mesma casa, mais oportunidades</h3>
+          <p>Você continua fazendo parte da Balanço — agora com mais caminhos de formação disponíveis.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 4: O Ecossistema Balanço -->
+    <section class="slide">
+      <p class="eyebrow">O Ecossistema Balanço</p>
+      <h2>Três frentes que se retroalimentam</h2>
+      <div class="eco-triangle">
+        <svg viewBox="0 0 740 350" preserveAspectRatio="xMidYMid meet">
+          <defs>
+            <marker id="arrowA" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path class="arrowhead a" d="M0,0 L10,5 L0,10 Z"/>
+            </marker>
+            <marker id="arrowB" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path class="arrowhead b" d="M0,0 L10,5 L0,10 Z"/>
+            </marker>
+            <marker id="arrowC" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path class="arrowhead c" d="M0,0 L10,5 L0,10 Z"/>
+            </marker>
+          </defs>
+          <!-- Escola → Bloco -->
+          <path class="flow a" d="M451,125 Q534,160 549,215" marker-end="url(#arrowA)"/>
+          <text class="flow-label a" x="553" y="152" text-anchor="middle">forma</text>
+          <!-- Bloco → Banda -->
+          <path class="flow b" d="M520,290 Q370,325 220,290" marker-end="url(#arrowB)"/>
+          <text class="flow-label b" x="370" y="338" text-anchor="middle">eleva</text>
+          <!-- Banda → Escola -->
+          <path class="flow c" d="M191,215 Q207,160 289,125" marker-end="url(#arrowC)"/>
+          <text class="flow-label c" x="187" y="152" text-anchor="middle">reinveste</text>
+        </svg>
+        <div class="tri-node escola">
+          <h3>🎓 Escola de Formação</h3>
+          <p>Núcleo de ensino. Capacitação técnica e contínua o ano todo, por naipe e nível para potencializar o desenvolvimento.</p>
+        </div>
+        <div class="tri-node bloco">
+          <h3>🎭 Bloco de Carnaval</h3>
+          <p>Vitrine cultural. Expressa o Carnaval carioca nas ruas com repertório diversificado.</p>
+        </div>
+        <div class="tri-node banda">
+          <h3>🎤 Banda Show</h3>
+          <p>Braço comercial. Eventos corporativos, casamentos e festas privadas geram receita.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 5: A nova estrutura em duas vertentes -->
+    <section class="slide">
+      <p class="eyebrow">A Nova Estrutura</p>
+      <h2>Duas vertentes, uma só <span class="accent">escola</span></h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="tag">Vertente 1</div>
+          <h3>Ritmos Gerais — Balanço Bloco</h3>
+          <div class="pill-row">
+            <span class="pill" style="border-left-color:var(--purple)">Samba</span><span class="pill" style="border-left-color:var(--red)">Axé</span><span class="pill" style="border-left-color:var(--blue)">Baião</span><span class="pill" style="border-left-color:var(--yellow)">Pagode baiano</span>
+            <span class="pill" style="border-left-color:var(--purple)">Pop</span><span class="pill" style="border-left-color:var(--red)">Marchinha</span><span class="pill" style="border-left-color:var(--blue)">e mais</span>
+          </div>
+          <ul class="plain" style="margin-top:14px;">
+            <li>Formação plural de ritmos que alimenta diretamente o Bloco de Carnaval.</li>
+            <li>Repertório enaltecendo a diversidade musical e cultural brasileira.</li>
+           </ul>
+ 
+        </div>
+        <div class="card">
+          <div class="tag">Vertente 2</div>
+          <h3>Samba-Enredo</h3>  <div class="badge-new">Novidade!</div>
+          <ul class="plain" style="margin-top:14px;">
+            <li>Foco 100% em samba-enredo</li>
+            <li>Aperfeiçoamento para o samba-enredo.</li>
+            <li>Prepara para o escolas e blocos dedicados à samba-enredo.</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 6: Por que essa mudança existe -->
+    <section class="slide">
+      <p class="eyebrow">Por Que Essa Mudança</p>
+      <h2>Excelência técnica para quem já vive o samba-enredo</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <div class="tag">Contexto</div>
+          <h3>Muitos alunos já tocam em outros blocos</h3>
+          <p>Boa parte dos integrantes participa de outros projetos que são 100% samba-enredo e quer se preparar melhor para isso.</p>
+        </div>
+        <div class="card">
+          <div class="tag">Objetivo</div>
+          <h3>Excelência técnica</h3>
+          <p>Queremos que quem sai daqui chegue tecnicamente pronto — não só de abadá e instrumento na mão.</p>
+        </div>
+        <div class="card">
+          <div class="tag">Liberdade</div>
+          <h3>Os dois núcleos não se excluem</h3>
+          <p>Não é obrigatório escolher: dá pra fazer Ritmos Gerais e Samba-Enredo ao mesmo tempo.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 7: Instrumentos -->
+    <section class="slide">
+      <p class="eyebrow">O Que Ensinamos</p>
+      <h2>Os instrumentos da Escola Balanço</h2>
+      <div class="instruments-grid">
+        <div class="instrument-card">
+          <div class="thumb"><img src="fotos/tamborim.png" alt="Tamborim"></div>
+          <div class="label">Tamborim</div>
+        </div>
+        <div class="instrument-card">
+          <div class="thumb"><img src="fotos/surdo.png" alt="Surdo"></div>
+          <div class="label">Surdo</div>
+        </div>
+        <div class="instrument-card">
+          <div class="thumb"><img src="fotos/repique.png" alt="Repique"></div>
+          <div class="label">Repique</div>
+        </div>
+        <div class="instrument-card">
+          <div class="thumb"><img src="fotos/caixa.png" alt="Caixa"></div>
+          <div class="label">Caixa</div>
+        </div>
+        <div class="instrument-card is-new">
+          <div class="thumb"><img src="fotos/timbal.png" alt="Timbal"></div>
+          <div class="label">Timbal</div>
+          <div class="badge-new">Novidade!</div>
+        </div>
+        <div class="instrument-card is-new">
+          <div class="thumb"><img src="fotos/xequere.png" alt="Xequerê"></div>
+          <div class="label">Xequerê</div>
+          <div class="badge-new">Novidade!</div>
+        </div>
+        <div class="instrument-card">
+          <div class="thumb"><img src="fotos/chocalho.png" alt="Chocalho"></div>
+          <div class="label">Chocalho</div>
+        </div>
+        <div class="instrument-card is-new">
+          <div class="thumb"><img src="fotos/canto.png" alt="Canto"></div>
+          <div class="label">Canto</div>
+          <div class="badge-new">Segundo Ano</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 8: Novidades — professores de Timbal e Xequerê -->
+    <section class="slide">
+      <p class="eyebrow">O Que Ensinamos</p>
+      <h2>Novidade: professores de Timbal e Xequerê</h2>
+      <div class="grid grid-2" style="gap:36px;">
+        <div class="teacher-photo">
+          <img src="fotos/proftimbal.jpeg" alt="Professor de Timbal">
+        </div>
+        <div class="teacher-photo">
+          <img src="fotos/profxequere.jpeg" alt="Professora de Xequerê">
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 9: Canto — aprofundando o naipe -->
+    <section class="slide">
+      <p class="eyebrow">O Que Ensinamos</p>
+      <h2>Canto: desenvolvendo novas vozes na Balanço</h2>
+      <div class="grid grid-2" style="align-items:stretch; gap:36px;">
+        <div>
+		
+		  <p class="lede">Este é o segundo ano da turma de canto.</p>
+          <p class="mini-label">Sobre a professora</p>
+          <p class="lede">Renata Braz é formada em canto lírico pela Escola de Música Villa-Lobos e é cantora oficial do bloco Balanço. Seu trabalho tem um olhar de consciência corporal e terapêutica através do cantar.</p>
+
+          <p class="mini-label">O que desenvolvemos</p>
+          <div class="pill-row">
+            <span class="pill" style="border-left-color:var(--purple)">Percepção musical</span><span class="pill" style="border-left-color:var(--red)">Dicção</span><span class="pill" style="border-left-color:var(--blue)">Respiração</span>
+            <span class="pill" style="border-left-color:var(--yellow)">Projeção vocal</span><span class="pill" style="border-left-color:var(--purple)">Interpretação de repertório</span>
+          </div>
+
+          <p class="mini-label">Objetivos da aula</p>
+          <ul class="plain">
+            <li>Preparação para cantar no dia do desfile do bloco.</li>
+            <li>Apresentações ao longo do ano em asilos, ONGs e outros espaços da comunidade.</li>
+          </ul>
+        </div>
+        <div class="directors-photo">
+          <img src="fotos/aulacanto.jpeg" alt="Aula de Canto">
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 10: Corpo docente e direção por naipe -->
+    <section class="slide">
+      <p class="eyebrow">Nossa Equipe</p>
+      <h2>Organização dos professores e diretores por naipe</h2>
+      <div class="grid grid-2" style="align-items:center; gap:36px;">
+        <div class="directors-photo">
+          <img src="fotos/diretores.png" alt="Diretoria da Escola Balanço">
+        </div>
+        <div>
+          <table class="team-table">
+            <thead>
+              <tr><th>Naipe / Contexto</th><th>Professores / Diretores</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="naipe">Mestre</td><td>Yago</td></tr>
+              <tr><td class="naipe">Surdo</td><td>Juliana, Izabella e Helena</td></tr>
+              <tr><td class="naipe">Caixa</td><td>Letícia, Valéria, Miguel e Igor</td></tr>
+              <tr><td class="naipe">Chocalho</td><td>Isabella</td></tr>
+              <tr><td class="naipe">Timbal</td><td>Kauã</td></tr>
+              <tr><td class="naipe">Repique</td><td>Amaury e Pedro</td></tr>
+              <tr><td class="naipe">Xequerê</td><td>Juliana</td></tr>
+              <tr><td class="naipe">Tamborim</td><td>Yago</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 11: Como funcionam as dinâmicas do bloco -->
+    <section class="slide">
+      <p class="eyebrow">Rotina de Aulas</p>
+      <h2>Sobre a dinâmica da Balanço</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>📅 Aulas semanais</h3>
+          <p>Cada naipe tem aula própria toda semana, com professor dedicado ao instrumento.</p>
+        </div>
+        <div class="card">
+          <h3>🤝 Encontros mensais</h3>
+          <p>Todos os instrumentos juntos, praticando o repertório completo do bloco.</p>
+        </div>
+        <div class="card">
+          <h3>🎪 Ensaio geral aberto</h3>
+          <p>Eventos ao longo do ano abertos ao público, no formato de "ensaio geral" para prática do repertório.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 12: O enredo de 2027 (1/2) -->
+    <section class="slide" data-bg-music="enredo2027">
+      <p class="eyebrow">Carnaval 2027</p>
+      <h2>O enredo de 2027</h2>
+      <div class="theme-photo full">
+        <img src="fotos/tema2027_1.jpeg" alt="Tema do enredo 2027">
+      </div>
+    </section>
+
+    <!-- SLIDE 13: O enredo de 2027 (2/2) -->
+    <section class="slide" data-bg-music="enredo2027">
+      <p class="eyebrow">Carnaval 2027</p>
+      <h2>O enredo de 2027</h2>
+      <div class="theme-photo full">
+        <img src="fotos/tema2027_2.jpeg" alt="Tema do enredo 2027">
+      </div>
+    </section>
+
+    <!-- SLIDE 14: Dinâmica do bloco no desfile -->
+    <section class="slide">
+      <p class="lede">E como vai funcionar o desfile esse ano?</p>
+      <p class="eyebrow">No Dia do Desfile</p>
+      <h2>Dinâmica do bloco no desfile</h2>
+      <div class="steps3">
+        <div class="card">
+          <div class="tag">Parte 1</div>
+          <h3>Todos os alunos</h3>
+          <p>Abertura do desfile com a formação completa do bloco.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="card">
+          <div class="tag">Parte 2</div>
+          <h3>Repertório samba-enredo</h3>
+          <p>Alunos das turmas desse módulo assumem o repertório.</p>
+        </div>
+        <div class="arrow">→</div>
+        <div class="card">
+          <div class="tag">Parte 3</div>
+          <h3>A partir do 2º ano</h3>
+          <p>Alunos mais experientes fecham o desfile.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 15: Diferenciais da Balanço -->
+    <section class="slide">
+      <p class="eyebrow">Diferenciais</p>
+      <h2>O que a Balanço tem de diferente</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <div class="tag">Ensino</div>
+          <h3>Tecnologia a favor do aprendizado</h3>
+          <ul class="plain" style="margin-top:6px;">
+            <li>Plataforma interativa: vídeos por instrumento e nível, metrônomo e áudio isolado para treinar no trânsito</li>
+            <li>Aulas segmentadas por instrumento e nível, com corpo docente dedicado</li>
+            <li>Encontros mensais para criar sinergia de todo o bloco</li>
+          </ul>
+        </div>
+        <div class="card">
+          <div class="tag">Estrutura</div>
+          <h3>Infraestrutura própria e eventos seguros</h3>
+          <ul class="plain" style="margin-top:6px;">
+            <li>Som próprio (microfones, caixas e cabos), que auxilia nos ensaios e eventos de pequeno porte</li>
+            <li>Eventos sempre em locais privados fechados — sem riscos de clima, segurança ou vizinhança</li>
+            <li>Fornecimento de instrumentos e acessórios, com incentivo à aquisição de itens pessoais</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 16: Compromisso e convivência -->
+    <section class="slide">
+      <p class="eyebrow">Compromisso e Convivência</p>
+      <h2>Como a gente se trata por aqui</h2>
+      <div class="grid grid-2">
+        <div class="card">
+          <h3>🤝 Cultura de equipe</h3>
+          <p>Respeito e compromisso com as datas de aula e ensaio fazem parte do dia a dia da escola.</p>
+        </div>
+        <div class="card">
+          <h3>🌸 Ambiente plural e acolhedor</h3>
+          <p>Projeto majoritariamente feminino, respeitoso e acolhedor a menores de idade.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE 17: Encerramento — próximos passos -->
+    <section class="slide">
+      <p class="eyebrow">Próximos Passos</p>
+      <h2>O que vem por aí</h2>
+      <div class="grid grid-3">
+        <div class="card">
+          <h3>🎼 Nova estrutura na harmonia</h3>
+          <p>Gustavo Muniz chega como diretor de harmonia, com o objetivo de padronizar a estrutura de todas as músicas do repertório e contribuir com sua experiência de anos de palco.</p>
+        </div>
+        <div class="card">
+          <h3>🥁 Novos naipes</h3>
+          <p>Timbal e Xequerê chegando com professores dedicados.</p>
+        </div>
+        <div class="card">
+          <h3>🎪 Parcerias</h3>
+          <p>Projetos como o Batuca Jardim, no Jardim Botânico, e Jo&Joe, no Cosme Velho, ampliando onde a escola atua.</p>
+        </div>
+      </div>
+      <p class="lede" style="margin-top:30px;">Dúvidas? Fala com a direção do seu naipe ou com a coordenação da escola.</p>
+    </section>
+
+    <!-- SLIDE 18: Fechamento -->
+    <section class="slide closing">
+      <p class="eyebrow" style="text-align:center;">Obrigado</p>
+      <h1>O carnaval do futuro<br>se forma <span class="accent">aqui</span>.</h1>
+      <p class="lede" style="margin:0 auto;">Escola Balanço — Formação de Ritmistas para o Carnaval<br>Bloco de Carnaval · Banda Show</p>
+      <div class="pill-row" style="justify-content:center; margin-top:26px;">
+        <span class="pill">📧 balanco.oficial7@gmail.com</span>
+        <span class="pill">📷 @balanco.oficial</span>
+        <span class="pill">▶️ @balanco.oficial</span>
+        <span class="pill">📘 Balanço</span>
+        <span class="pill">🎵 @balanco.oficial</span>
+      </div>
+    </section>
+
+  </div>
+
+  <button class="arrow-btn prev" id="btnPrev" aria-label="Slide anterior">‹</button>
+  <button class="arrow-btn next" id="btnNext" aria-label="Próximo slide">›</button>
+  <nav class="dots" id="dots"></nav>
+  <button class="fs-btn" id="btnFs">Tela cheia</button>
+  <footer class="credit">projeto balanço</footer>
+
+  <!-- Áudio de fundo (arquivo local em fotos/, oculto — o vídeo não aparece,
+       só o som). Toca automaticamente nos slides marcados com
+       data-bg-music="enredo2027" (hoje: slides 12 e 13, o enredo de 2027) e
+       pausa fora deles. Pra trocar a música, troque o arquivo em fotos/ e o
+       src abaixo. -->
+  <video id="bgAudio" src="fotos/domingo23.mp4" preload="auto" playsinline
+    style="position:fixed; width:1px; height:1px; bottom:0; right:0; opacity:0; pointer-events:none;"></video>
+
+<script>
+  // ============================================================
+  // Motor de navegação — não precisa mexer aqui para editar textos
+  // ============================================================
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsWrap = document.getElementById('dots');
+  const curNum = document.getElementById('curNum');
+  const totalNum = document.getElementById('totalNum');
+  const progressFill = document.getElementById('progressFill');
+  let idx = 0;
+
+  totalNum.textContent = String(slides.length).padStart(2,'0');
+
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.addEventListener('click', () => goTo(i));
+    dotsWrap.appendChild(b);
+  });
+  const dotEls = Array.from(dotsWrap.children);
+
+  function render(){
+    slides.forEach((s,i)=> s.classList.toggle('active', i===idx));
+    dotEls.forEach((d,i)=> d.classList.toggle('active', i===idx));
+    curNum.textContent = String(idx+1).padStart(2,'0');
+    progressFill.style.width = ((idx+1)/slides.length*100) + '%';
+    document.getElementById('btnPrev').disabled = idx===0;
+    document.getElementById('btnNext').disabled = idx===slides.length-1;
+    applyBgMusicZone(slides[idx].dataset.bgMusic || null);
+  }
+  function goTo(i){ idx = Math.max(0, Math.min(slides.length-1, i)); render(); }
+  function next(){ goTo(idx+1); }
+  function prev(){ goTo(idx-1); }
+
+  document.getElementById('btnNext').addEventListener('click', next);
+  document.getElementById('btnPrev').addEventListener('click', prev);
+
+  window.addEventListener('keydown', (e)=>{
+    if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
+    else if(['ArrowLeft','ArrowUp','PageUp'].includes(e.key)){ e.preventDefault(); prev(); }
+    else if(e.key === 'Home'){ goTo(0); }
+    else if(e.key === 'End'){ goTo(slides.length-1); }
+    else if(e.key.toLowerCase() === 'f'){ toggleFs(); }
+  });
+
+  // navegação por swipe (touch)
+  let touchX = null;
+  window.addEventListener('touchstart', e => touchX = e.touches[0].clientX);
+  window.addEventListener('touchend', e => {
+    if(touchX===null) return;
+    const dx = e.changedTouches[0].clientX - touchX;
+    if(Math.abs(dx) > 50) dx < 0 ? next() : prev();
+    touchX = null;
+  });
+
+  function toggleFs(){
+    if(!document.fullscreenElement){ document.documentElement.requestFullscreen().catch(()=>{}); }
+    else{ document.exitFullscreen(); }
+  }
+  document.getElementById('btnFs').addEventListener('click', toggleFs);
+
+  // ============================================================
+  // Áudio de fundo (arquivo local, oculto) — troque o src do elemento
+  // #bgAudio no HTML pra trocar a música. Para tocar em outros slides,
+  // adicione data-bg-music="algumnome" na <section class="slide"> desejada
+  // (slides com o mesmo nome formam uma "zona" só, e a música não reinicia
+  // ao trocar de slide dentro da mesma zona).
+  // ============================================================
+  const bgAudio = document.getElementById('bgAudio');
+  let bgMusicZone = null;
+
+  function applyBgMusicZone(zone){
+    if(zone === bgMusicZone) return; // já tocando/pausado nessa zona — não reinicia
+    if(zone){ bgAudio.currentTime = 0; bgAudio.play().catch(()=>{}); }
+    else{ bgAudio.pause(); }
+    bgMusicZone = zone;
+  }
+
+  render();
+</script>
+</body>
+</html>
