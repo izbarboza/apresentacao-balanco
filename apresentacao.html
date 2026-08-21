@@ -349,10 +349,12 @@
     margin-top:8px; font-size:13px; color:var(--text); font-weight:600;
   }
   .instrument-card.is-new .thumb{ border-color:var(--yellow); box-shadow:0 0 0 2px var(--yellow); }
-  .instrument-card .badge-new{
+
+  /* badge amarelo genérico ("Novidade!", "Segundo Ano"...) — usado em instrument-card, card e direto ao lado de títulos */
+  .badge-new{
     display:inline-block; margin-top:4px; font-size:10px; font-weight:800;
     letter-spacing:.02em; color:#3a2f00; background:var(--yellow);
-    padding:2px 8px; border-radius:999px;
+    padding:2px 8px; border-radius:999px; vertical-align:middle;
   }
 
   /* ---- placeholders de texto/foto genéricos (slides de Canto, Timbal/Xequerê, Enredo 2027) ---- */
@@ -371,12 +373,6 @@
   }
   .photo-placeholder .ph-icon{ font-size:26px; }
   .photo-placeholder.standalone{ flex:none; aspect-ratio:4/3; height:auto; }
-
-  .card .badge-new{
-    display:inline-block; margin-top:4px; font-size:10px; font-weight:800;
-    letter-spacing:.02em; color:#3a2f00; background:var(--yellow);
-    padding:2px 8px; border-radius:999px;
-  }
 
   /* ---- timeline / trajetória (slide 2) ---- */
   .timeline{ display:flex; align-items:stretch; gap:0; margin-top:16px; }
@@ -467,8 +463,7 @@
       <h2>Apresentando a <span class="accent">Escola Balanço</span></h2>
       <p class="lede" style="margin-bottom:36px;">
         O projeto passa a se chamar oficialmente <b>Escola Balanço de Formação de Ritmistas
-        para o Carnaval</b> — uma estrutura mais ampla que reúne tudo o que já fazemos.
-        O Bloco Balanço continua existindo exatamente como sempre foi, mas agora ele é uma das frentes dentro dessa escola.
+        para o Carnaval</b>, uma estrutura mais ampla que reúne tudo o que já fazemos.
       </p>
       <div class="grid grid-3">
         <div class="card">
@@ -526,7 +521,7 @@
         </div>
         <div class="tri-node banda">
           <h3>🎤 Banda Show</h3>
-          <p>Braço comercial. Eventos corporativos, casamentos e festas privadas geram receita.</p>
+          <p>Vitrine profissional. Eventos corporativos, casamentos e festas privadas ao longo do ano, com espaço pra alunos entrarem no grupo com o tempo.</p>
         </div>
       </div>
     </section>
@@ -574,12 +569,12 @@
         <div class="card">
           <div class="tag">Objetivo</div>
           <h3>Excelência técnica</h3>
-          <p>Ensino de todas as características e particularidades de cada escola de samba com trabalhos específicos e técnicos de execução em desenhos e arranjos de grandes sambas enredos do carnaval.</p>
+          <p>Ensino técnico dos desenhos e arranjos de grandes sambas-enredo, com atenção às particularidades de cada escola de samba.</p>
         </div>
         <div class="card">
           <div class="tag">Liberdade</div>
           <h3>Os dois núcleos não se excluem</h3>
-          <p>Não é obrigatório escolher: dá pra fazer Ritmos Gerais e Samba-Enredo ao mesmo tempo.</p>
+          <p>Não é obrigatório escolher: dá pra fazer parte do Bloco e do núcleo de Samba-Enredo ao mesmo tempo.</p>
         </div>
       </div>
     </section>
@@ -646,11 +641,9 @@
     <!-- SLIDE 9: Canto — aprofundando o naipe -->
     <section class="slide">
       <p class="eyebrow">O Que Ensinamos</p>
-      <h2>Canto: desenvolvendo novas vozes na Balanço</h2>
+      <h2>Canto: desenvolvendo novas vozes na Balanço <div class="badge-new">Segundo Ano</div></h2> 
       <div class="grid grid-2" style="align-items:stretch; gap:36px;">
         <div>
-		
-		  <p class="lede">Este é o segundo ano da turma de canto.</p>
           <p class="mini-label">Sobre a professora</p>
           <p class="lede">Renata Braz é formada em canto lírico pela Escola de Música Villa-Lobos e é cantora oficial do bloco Balanço. Seu trabalho tem um olhar de consciência corporal e terapêutica através do cantar.</p>
 
@@ -752,7 +745,7 @@
         <div class="card">
           <div class="tag">Parte 2</div>
           <h3>Repertório samba-enredo</h3>
-          <p>Alunos das turmas desse módulo assumem e apresentam o melhor do samba enredo do RJ.</p>
+          <p>Alunos das turmas desse módulo assumem e apresentam grandes clássicos do samba-enredo.</p>
         </div>
         <div class="arrow">→</div>
         <div class="card">
@@ -772,7 +765,7 @@
           <div class="tag">Ensino</div>
           <h3>Um método de ensino completo</h3>
           <ul class="plain" style="margin-top:6px;">
-            <li>Plataforma interativa <i>Emusys</i>: vídeos por instrumento e nível e metrônomo. Vídeos e áudios isolados das músicas para prática e fixação do repertório.</li>
+            <li>Plataforma interativa: vídeos por instrumento e nível e metrônomo. Vídeos e áudios isolados das músicas para prática e fixação do repertório.</li>
             <li>Aulas segmentadas por instrumento e nível, com corpo docente dedicado.</li>
             <li>Encontros mensais de todos os instrumentos para criar sinergia de todo o bloco.</li>
           </ul>
@@ -781,9 +774,9 @@
           <div class="tag">Estrutura</div>
           <h3>Infraestrutura própria e eventos seguros</h3>
           <ul class="plain" style="margin-top:6px;">
-            <li>Som próprio (microfones, caixas e cabos), que auxilia nos ensaios e eventos de pequeno porte</li>
-            <li>Eventos sempre em locais privados fechados, sem riscos de problemas climáticos ou segurança</li>
-            <li>Fornecimento de instrumentos e acessórios, com incentivo e suporte para a aquisição de itens pessoais. Damos dicas de fornecedores conhecidos e que nós mesmos consumimos.</li>
+            <li>Som próprio (microfones, caixas e cabos), que auxilia nos ensaios e eventos de pequeno porte.</li>
+            <li>Eventos sempre em locais privados, sem riscos de problemas climáticos ou de segurança.</li>
+            <li>Grande acervo de instrumentos para as aulas e apresentações.</li>
           </ul>
         </div>
       </div>
@@ -796,11 +789,11 @@
       <div class="grid grid-2">
         <div class="card">
           <h3>🤝 Cultura de equipe</h3>
-          <p>Respeito e compromisso com as datas de aula e ensaio fazem parte do dia a dia da escola.</p>
+          <p>Trabalho em equipe, colaboração e compromisso com o crescimento e bem-estar de cada indivíduo e do coletivo.</p>
         </div>
         <div class="card">
-          <h3>🌸 Ambiente plural e acolhedor</h3>
-          <p>Projeto majoritariamente feminino, respeitoso e acolhedor a menores de idade.</p>
+          <h3>🌸 Ambiente plural e respeitoso</h3>
+          <p>Projeto majoritariamente feminino, com espaço para todos. Acreditamos que a música transforma a vida de pessoas de qualquer idade — por isso, somos acolhedores a todas as faixas etárias, inclusive menores.</p>
         </div>
       </div>
     </section>
@@ -820,10 +813,9 @@
         </div>
         <div class="card">
           <h3>🎪 Parcerias</h3>
-          <p>Projetos como o Batuca Jardim, na Ecovila Rihappy no Jardim Botânico, e Jo&Joe, no Cosme Velho, ampliando onde a escola atua.</p>
+          <p>Projetos como o Batuca Jardim, na Ecovila Rihappy no Jardim Botânico, e Jo&Joe, no Cosme Velho, ampliando o campo de atuação do projeto.</p>
         </div>
       </div>
-      <p class="lede" style="margin-top:30px;">Dúvidas? Fala com a direção do seu naipe ou com a coordenação da escola.</p>
     </section>
 
     <!-- SLIDE 18: Fechamento -->
