@@ -504,14 +504,14 @@
             </marker>
           </defs>
           <!-- Escola → Bloco -->
-          <path class="flow a" d="M451,125 Q534,160 549,215" marker-end="url(#arrowA)"/>
-          <text class="flow-label a" x="553" y="152" text-anchor="middle">forma</text>
+          <path class="flow a" d="M451,148 Q534,172 549,215" marker-end="url(#arrowA)"/>
+          <text class="flow-label a" x="553" y="170" text-anchor="middle">forma</text>
           <!-- Bloco → Banda -->
           <path class="flow b" d="M520,290 Q370,325 220,290" marker-end="url(#arrowB)"/>
           <text class="flow-label b" x="370" y="338" text-anchor="middle">eleva</text>
           <!-- Banda → Escola -->
-          <path class="flow c" d="M191,215 Q207,160 289,125" marker-end="url(#arrowC)"/>
-          <text class="flow-label c" x="187" y="152" text-anchor="middle">reinveste</text>
+          <path class="flow c" d="M191,215 Q206,172 289,148" marker-end="url(#arrowC)"/>
+          <text class="flow-label c" x="187" y="170" text-anchor="middle">reinveste</text>
         </svg>
         <div class="tri-node escola">
           <h3>🎓 Escola de Formação</h3>
@@ -523,7 +523,7 @@
         </div>
         <div class="tri-node banda">
           <h3>🎤 Banda Show</h3>
-          <p>Vitrine profissional. Eventos corporativos, casamentos e festas privadas ao longo do ano, com espaço pra alunos entrarem no grupo com o tempo.</p>
+          <p>Vitrine profissional. Eventos corporativos, casamentos e festas privadas ao longo do ano. Alunos gradualmente se juntam ao grupo.</p>
         </div>
       </div>
     </section>
@@ -907,6 +907,11 @@
 
   document.getElementById('btnNext').addEventListener('click', next);
   document.getElementById('btnPrev').addEventListener('click', prev);
+
+  // clique em qualquer ponto do slide avança — útil pra apresentar com
+  // mouse ou passador de slide (a maioria dos clickers já funciona sem
+  // isso, porque emula as setas do teclado, tratadas mais abaixo)
+  document.getElementById('deck').addEventListener('click', next);
 
   window.addEventListener('keydown', (e)=>{
     if(['ArrowRight','ArrowDown','PageDown',' '].includes(e.key)){ e.preventDefault(); next(); }
