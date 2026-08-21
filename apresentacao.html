@@ -4,6 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Ecossistema Balanço — Apresentação</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&display=swap" rel="stylesheet">
 
 <!--
   ============================================================================
@@ -278,14 +281,26 @@
   }
   .directors-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
 
-  /* ---- fotos dos professores novos, orientações variadas (slide 8) ---- */
+  /* ---- fotos dos professores novos, ambas em pé (slide 8) ---- */
   .teacher-photo{
+    position:relative;
     border-radius:14px; overflow:hidden; border:1px solid var(--border);
     box-shadow:0 1px 2px rgba(20,30,24,.03), 0 8px 20px rgba(20,30,24,.04);
-    aspect-ratio: 547 / 437; background:var(--panel-2);
-    display:flex; align-items:center; justify-content:center;
+    aspect-ratio: 3 / 4; height:min(56vh, 540px); width:auto; margin:0 auto;
   }
-  .teacher-photo img{ max-width:100%; max-height:100%; object-fit:contain; display:block; }
+  .teacher-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+
+  /* ---- anotação "à caneta" apontando pro professor/professora (slide 8) ---- */
+  .hand-note{
+    position:absolute; z-index:2;
+    font-family:'Caveat', 'Segoe Script', 'Comic Sans MS', cursive;
+    font-weight:700; font-size:33px; line-height:1;
+    color:var(--accent);
+    text-shadow:0 0 4px var(--bg), 0 0 4px var(--bg), 0 0 8px var(--bg);
+    pointer-events:none;
+  }
+  .hand-note.kaua{ top:12px; left:14px; transform:rotate(-8deg); }
+  .hand-note.juliana{ top:12px; right:14px; transform:rotate(7deg); }
 
   /* ---- fotos do enredo 2027, formato widescreen (slides 12-13) ---- */
   .theme-photo{
@@ -452,14 +467,14 @@
       <h2>Apresentando a <span class="accent">Escola Balanço</span></h2>
       <p class="lede" style="margin-bottom:36px;">
         O projeto passa a se chamar oficialmente <b>Escola Balanço de Formação de Ritmistas
-        para o Carnaval</b>: uma estrutura mais ampla que reúne tudo o que já fazemos.
-        O Bloco Balanço continua existindo exatamente como sempre foi: agora ele é uma das frentes dentro dessa escola.
+        para o Carnaval</b> — uma estrutura mais ampla que reúne tudo o que já fazemos.
+        O Bloco Balanço continua existindo exatamente como sempre foi, mas agora ele é uma das frentes dentro dessa escola.
       </p>
       <div class="grid grid-3">
         <div class="card">
           <div class="tag">O que muda</div>
           <h3>Uma escola, não só um bloco</h3>
-          <p>O Bloco Balanço segue igual — ensaios, desfile, repertório. Ele passa a ser uma das frentes de uma estrutura maior.</p>
+          <p>O Bloco Balanço segue igual: ensaios, desfile, repertório variado, mas agora passa a ser uma das frentes de uma estrutura maior.</p>
         </div>
         <div class="card">
           <div class="tag">Marca</div>
@@ -468,8 +483,8 @@
         </div>
         <div class="card">
           <div class="tag">Para você, aluno(a)</div>
-          <h3>Mesma casa, mais oportunidades</h3>
-          <p>Você continua fazendo parte da Balanço — agora com mais caminhos de formação disponíveis.</p>
+          <h3>Mesmo projeto, mais oportunidades</h3>
+          <p>Você continua fazendo parte da Balanço, agora com mais caminhos de formação disponíveis.</p>
         </div>
       </div>
     </section>
@@ -538,9 +553,9 @@
           <div class="tag">Vertente 2</div>
           <h3>Samba-Enredo</h3>  <div class="badge-new">Novidade!</div>
           <ul class="plain" style="margin-top:14px;">
-            <li>Foco 100% em samba-enredo</li>
-            <li>Aperfeiçoamento para o samba-enredo.</li>
-            <li>Prepara para o escolas e blocos dedicados à samba-enredo.</li>
+            <li>Foco 100% em samba-enredo.</li>
+            <li>Aperfeiçoamento com desenhos e bossas de grandes clássicos.</li>
+            <li>Preparação para escolas de samba e blocos.</li>
           </ul>
         </div>
       </div>
@@ -559,7 +574,7 @@
         <div class="card">
           <div class="tag">Objetivo</div>
           <h3>Excelência técnica</h3>
-          <p>Queremos que quem sai daqui chegue tecnicamente pronto — não só de abadá e instrumento na mão.</p>
+          <p>Ensino de todas as características e particularidades de cada escola de samba com trabalhos específicos e técnicos de execução em desenhos e arranjos de grandes sambas enredos do carnaval.</p>
         </div>
         <div class="card">
           <div class="tag">Liberdade</div>
@@ -615,13 +630,15 @@
     <!-- SLIDE 8: Novidades — professores de Timbal e Xequerê -->
     <section class="slide">
       <p class="eyebrow">O Que Ensinamos</p>
-      <h2>Novidade: professores de Timbal e Xequerê</h2>
+      <h2>Novidade: Timbal e Xequerê são os dois novos instrumentos da Balanço</h2>
       <div class="grid grid-2" style="gap:36px;">
         <div class="teacher-photo">
           <img src="fotos/proftimbal.jpeg" alt="Professor de Timbal">
+          <span class="hand-note kaua">Kauã</span>
         </div>
         <div class="teacher-photo">
           <img src="fotos/profxequere.jpeg" alt="Professora de Xequerê">
+          <span class="hand-note juliana">Juliana</span>
         </div>
       </div>
     </section>
@@ -698,7 +715,7 @@
         </div>
         <div class="card">
           <h3>🎪 Ensaio geral aberto</h3>
-          <p>Eventos ao longo do ano abertos ao público, no formato de "ensaio geral" para prática do repertório.</p>
+          <p>Eventos abertos ao público, no formato de "ensaio geral" para prática do repertório.</p>
         </div>
       </div>
     </section>
@@ -723,9 +740,8 @@
 
     <!-- SLIDE 14: Dinâmica do bloco no desfile -->
     <section class="slide">
-      <p class="lede">E como vai funcionar o desfile esse ano?</p>
-      <p class="eyebrow">No Dia do Desfile</p>
-      <h2>Dinâmica do bloco no desfile</h2>
+      <p class="eyebrow">E como será o desfile esse ano?</p>
+      <h2>Dinâmica da Balanço no desfile 2027</h2>
       <div class="steps3">
         <div class="card">
           <div class="tag">Parte 1</div>
@@ -736,13 +752,13 @@
         <div class="card">
           <div class="tag">Parte 2</div>
           <h3>Repertório samba-enredo</h3>
-          <p>Alunos das turmas desse módulo assumem o repertório.</p>
+          <p>Alunos das turmas desse módulo assumem e apresentam o melhor do samba enredo do RJ.</p>
         </div>
         <div class="arrow">→</div>
         <div class="card">
           <div class="tag">Parte 3</div>
           <h3>A partir do 2º ano</h3>
-          <p>Alunos mais experientes fecham o desfile.</p>
+          <p>Alunos a partir do segundo ano farão a terceira parte com músicas novas no repertório.</p>
         </div>
       </div>
     </section>
@@ -754,11 +770,11 @@
       <div class="grid grid-2">
         <div class="card">
           <div class="tag">Ensino</div>
-          <h3>Tecnologia a favor do aprendizado</h3>
+          <h3>Um método de ensino completo</h3>
           <ul class="plain" style="margin-top:6px;">
-            <li>Plataforma interativa: vídeos por instrumento e nível, metrônomo e áudio isolado para treinar no trânsito</li>
-            <li>Aulas segmentadas por instrumento e nível, com corpo docente dedicado</li>
-            <li>Encontros mensais para criar sinergia de todo o bloco</li>
+            <li>Plataforma interativa <i>Emusys</i>: vídeos por instrumento e nível e metrônomo. Vídeos e áudios isolados das músicas para prática e fixação do repertório.</li>
+            <li>Aulas segmentadas por instrumento e nível, com corpo docente dedicado.</li>
+            <li>Encontros mensais de todos os instrumentos para criar sinergia de todo o bloco.</li>
           </ul>
         </div>
         <div class="card">
@@ -766,8 +782,8 @@
           <h3>Infraestrutura própria e eventos seguros</h3>
           <ul class="plain" style="margin-top:6px;">
             <li>Som próprio (microfones, caixas e cabos), que auxilia nos ensaios e eventos de pequeno porte</li>
-            <li>Eventos sempre em locais privados fechados — sem riscos de clima, segurança ou vizinhança</li>
-            <li>Fornecimento de instrumentos e acessórios, com incentivo à aquisição de itens pessoais</li>
+            <li>Eventos sempre em locais privados fechados, sem riscos de problemas climáticos ou segurança</li>
+            <li>Fornecimento de instrumentos e acessórios, com incentivo e suporte para a aquisição de itens pessoais. Damos dicas de fornecedores conhecidos e que nós mesmos consumimos.</li>
           </ul>
         </div>
       </div>
@@ -791,8 +807,8 @@
 
     <!-- SLIDE 17: Encerramento — próximos passos -->
     <section class="slide">
-      <p class="eyebrow">Próximos Passos</p>
-      <h2>O que vem por aí</h2>
+      <p class="eyebrow">Resumo das novidades</p>
+      <h2>O que estamos trazendo esse ano</h2>
       <div class="grid grid-3">
         <div class="card">
           <h3>🎼 Nova estrutura na harmonia</h3>
@@ -800,11 +816,11 @@
         </div>
         <div class="card">
           <h3>🥁 Novos naipes</h3>
-          <p>Timbal e Xequerê chegando com professores dedicados.</p>
+          <p>Timbal e Xequerê fazendo parte da formação fixa da Balanço.</p>
         </div>
         <div class="card">
           <h3>🎪 Parcerias</h3>
-          <p>Projetos como o Batuca Jardim, no Jardim Botânico, e Jo&Joe, no Cosme Velho, ampliando onde a escola atua.</p>
+          <p>Projetos como o Batuca Jardim, na Ecovila Rihappy no Jardim Botânico, e Jo&Joe, no Cosme Velho, ampliando onde a escola atua.</p>
         </div>
       </div>
       <p class="lede" style="margin-top:30px;">Dúvidas? Fala com a direção do seu naipe ou com a coordenação da escola.</p>
