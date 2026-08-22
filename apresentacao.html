@@ -63,6 +63,9 @@
     --purple: #383358;
     --danger: #eb514f;
 
+    --grid-line: rgba(20,30,24,.05);  /* linhas da textura de fundo — cada tema redefine a sua */
+    --shadow: 0 1px 2px rgba(0,0,0,.06), 0 8px 20px rgba(0,0,0,.10); /* sombra de cards — funciona em qualquer tema */
+
     --font-head: 'Segoe UI', 'Arial', sans-serif;
     --font-body: 'Segoe UI', 'Arial', sans-serif;
   }
@@ -75,17 +78,46 @@
     overflow:hidden;
   }
 
-  /* ---------- textura de fundo sutil ---------- */
-  body::before{
-    content:"";
-    position:fixed; inset:0;
-    background-image:
-      linear-gradient(rgba(20,30,24,.05) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(20,30,24,.05) 1px, transparent 1px);
-    background-size: 48px 48px;
-    pointer-events:none;
-    z-index:0;
+  /* ============================ TEMAS POR SLIDE ============================
+     Por padrão um slide usa a paleta neutra do :root. Pra dar mais vida à
+     apresentação, adicione data-theme="dark-green" | "black" | "color" na
+     tag <section class="slide" ...> de qualquer slide — todo o resto (cards,
+     tabelas, pills, badges) se adapta sozinho porque tudo usa var(--...).
+     ========================================================================== */
+  .slide[data-theme="dark-green"]{
+    --bg:#0b2b1c; --panel:#123825; --panel-2:#16432c; --border:#1f5636;
+    --text:#f3f7f2; --text-dim:#bcd4c3;
+    --accent:#4ee897; --accent-soft:rgba(78,232,151,.14); --accent-line:rgba(78,232,151,.4);
+    --grid-line: rgba(255,255,255,.045);
   }
+  .slide[data-theme="black"]{
+    --bg:#0a0a0a; --panel:#171717; --panel-2:#1f1f1f; --border:#2c2c2c;
+    --text:#f5f5f2; --text-dim:#9a9a94;
+    --accent:#34d399; --accent-soft:rgba(52,211,153,.14); --accent-line:rgba(52,211,153,.4);
+    --grid-line: rgba(255,255,255,.04);
+  }
+  .slide[data-theme="color"]{
+    --bg:#383358; --panel:#443f6b; --panel-2:#4d4778; --border:#5b5488;
+    --text:#faf7f0; --text-dim:#c7c2de;
+    --accent:#e4cf57; --accent-soft:rgba(228,207,87,.16); --accent-line:rgba(228,207,87,.45);
+    --grid-line: rgba(255,255,255,.05);
+  }
+
+  /* ---- chrome fixo (topo/rodapé/setas) legível sobre slides escuros ---- */
+  body.chrome-dark header.topbar .logo,
+  body.chrome-dark .counter{ color:rgba(255,255,255,.78); }
+  body.chrome-dark .counter b{ color:#fff; }
+  body.chrome-dark .progress-fill{ background:rgba(255,255,255,.85); }
+  body.chrome-dark nav.dots button{ border-color:rgba(255,255,255,.3); }
+  body.chrome-dark nav.dots button.active{ background:#fff; border-color:#fff; }
+  body.chrome-dark .arrow-btn{
+    background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); color:#fff;
+    box-shadow:none;
+  }
+  body.chrome-dark .arrow-btn:hover{ border-color:#fff; color:#fff; }
+  body.chrome-dark .fs-btn{ background:rgba(255,255,255,.1); border-color:rgba(255,255,255,.28); color:rgba(255,255,255,.85); }
+  body.chrome-dark .fs-btn:hover{ color:#fff; border-color:#fff; }
+  body.chrome-dark footer.credit{ color:rgba(255,255,255,.55); }
 
   /* ============================ CHROME / UI ============================ */
   header.topbar{
@@ -352,6 +384,29 @@
   }
   .instrument-card.is-new .thumb{ border-color:var(--yellow); box-shadow:0 0 0 2px var(--yellow); }
 
+  /* ---- coleção de produtos: camisas, copo, ecobag (slides Coleção Balanço) ---- */
+  .merch-grid{ display:grid; gap:22px; margin-top:8px; }
+  .merch-grid.cols-2{ grid-template-columns:repeat(2,1fr); max-width:640px; margin-left:auto; margin-right:auto; }
+  .merch-grid.cols-3{ grid-template-columns:repeat(3,1fr); }
+  .merch-item{ text-align:center; }
+  .merch-item .thumb{
+    border-radius:14px; overflow:hidden; border:1px solid var(--border);
+    box-shadow:0 1px 2px rgba(20,30,24,.03), 0 8px 20px rgba(20,30,24,.04);
+    aspect-ratio:16/9; background:var(--panel-2);
+  }
+  .merch-item .thumb img{ width:100%; height:100%; object-fit:contain; display:block; }
+  .merch-item .label{ margin-top:10px; font-size:13.5px; color:var(--text); font-weight:600; }
+  /* camisas preta/branca/listrada: já sem fundo e com proporções bem próximas (~2:1) —
+     preenche a caixa até a borda em vez de deixar sobra */
+  .merch-grid.banner-shirts .merch-item .thumb{ aspect-ratio:2/1; }
+  .merch-grid.banner-shirts .merch-item .thumb img{ object-fit:cover; }
+  /* copo e ecobag: versões sem o prefixo "t" (copo.png/ecobag.png) têm quase a mesma
+     proporção entre si (~1,78:1 as duas) — dá pra usar uma caixa só, do mesmo tamanho
+     pras duas, com object-fit:contain (sem cortar e sem sobrar borda) */
+  .merch-grid.product-pair{ max-width:920px; }
+  .merch-grid.product-pair .merch-item .thumb{ aspect-ratio:845/476; }
+  .merch-grid.product-pair .merch-item .thumb img{ object-fit:contain; }
+
   /* badge amarelo genérico ("Novidade!", "Segundo Ano"...) — usado em instrument-card, card e direto ao lado de títulos */
   .badge-new{
     display:inline-block; margin-top:4px; font-size:10px; font-weight:800;
@@ -487,7 +542,7 @@
     </section>
 
     <!-- SLIDE 4: O Ecossistema Balanço -->
-    <section class="slide">
+    <section class="slide" data-theme="dark-green">
       <p class="eyebrow">O Ecossistema Balanço</p>
       <h2>Três frentes que se retroalimentam</h2>
       <div class="eco-triangle">
@@ -696,7 +751,7 @@
     </section>
 
     <!-- SLIDE 11: Como funcionam as dinâmicas do bloco -->
-    <section class="slide">
+    <section class="slide" data-theme="color">
       <p class="eyebrow">Rotina de Aulas</p>
       <h2>Sobre a dinâmica da Balanço</h2>
       <div class="grid grid-3">
@@ -716,7 +771,7 @@
     </section>
 
     <!-- SLIDE 12: O enredo de 2027 (1/2) -->
-    <section class="slide" data-bg-music="enredo2027">
+    <section class="slide" data-theme="black" data-bg-music="enredo2027">
       <p class="eyebrow">Carnaval 2027</p>
       <h2>O enredo de 2027</h2>
       <div class="theme-photo full">
@@ -725,7 +780,7 @@
     </section>
 
     <!-- SLIDE 13: O enredo de 2027 (2/2) -->
-    <section class="slide" data-bg-music="enredo2027">
+    <section class="slide" data-theme="black" data-bg-music="enredo2027">
       <p class="eyebrow">Carnaval 2027</p>
       <h2>O enredo de 2027</h2>
       <div class="theme-photo full">
@@ -816,6 +871,62 @@
         <div class="card">
           <h3>🎪 Parcerias</h3>
           <p>Projetos como o Batuca Jardim, na Ecovila Rihappy no Jardim Botânico, e Jo&Joe, no Cosme Velho, ampliando o campo de atuação do projeto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE NOVO: Coleção Balanço — camisas por naipe (1/2) -->
+    <section class="slide">
+      <p class="eyebrow">Coleção Balanço</p>
+      <h2>Camisas para cada naipe</h2>
+      <div class="merch-grid cols-3">
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/camisa_timbal.png" alt="Camisa do naipe de Timbal"></div>
+          <div class="label">Timbal</div>
+        </div>
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/camisa_xequere.png" alt="Camisa do naipe de Xequerê"></div>
+          <div class="label">Xequerê</div>
+        </div>
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/camisa_surdo.png" alt="Camisa do naipe de Surdo"></div>
+          <div class="label">Surdo</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE NOVO: Coleção Balanço — camisas preta, branca e listrada (2/3) -->
+    <section class="slide">
+      <p class="eyebrow">Coleção Balanço</p>
+      <h2>Mais camisas da coleção</h2>
+      <div class="merch-grid cols-3 banner-shirts">
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/tcamisa_preta.png" alt="Camisa preta"></div>
+          <div class="label">Camisa preta</div>
+        </div>
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/tcamisa_branca.png" alt="Camisa branca"></div>
+          <div class="label">Camisa branca</div>
+        </div>
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/tcamisa_listras.png" alt="Camisa listrada"></div>
+          <div class="label">Camisa listrada</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SLIDE NOVO: Coleção Balanço — copo e ecobag (3/3) -->
+    <section class="slide">
+      <p class="eyebrow">Coleção Balanço</p>
+      <h2>Copo e ecobag da coleção</h2>
+      <div class="merch-grid cols-2 product-pair">
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/copo.png" alt="Copo Balanço"></div>
+          <div class="label">Copo</div>
+        </div>
+        <div class="merch-item">
+          <div class="thumb"><img src="blusinhas/ecobag.png" alt="Ecobag Balanço"></div>
+          <div class="label">Ecobag</div>
         </div>
       </div>
     </section>
